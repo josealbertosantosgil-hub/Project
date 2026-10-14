@@ -3,7 +3,7 @@ const bars=s=>{const d=/^\d+$/.test(s)&&s.length%2==0,v=[d?105:104];if(d)for(let
 const bc=s=>{s=String(s??'').replace(/[^\x20-\x7e]/g,'');if(!s)return'';let x=10,r='';[...bars(s)].forEach((w,i)=>{w=+w;if(i%2==0)r+=`<rect x=${x} width=${w} height=44 />`;x+=w});const W=x+10;return`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} 44" width=${Math.round(W*Math.min(2,280/W))} height=44 shape-rendering=crispEdges><rect width=${W} height=44 fill="#fff"/><g fill="#000">${r}</g></svg>`};
 const TIENDA='Mi Tienda';
 const $=s=>document.querySelector(s);
-const api=async(a,t='',b,q='')=>{let r;try{r=await fetch(`api.php?a=${a}&t=${t}${q}`,b?{method:'POST',body:JSON.stringify(b)}:{})}catch{throw new Error('Sin conexión con el servidor. Abre http://localhost/pos_system/ con Apache y MySQL encendidos.')}const x=await r.text();let d;try{d=JSON.parse(x)}catch{throw new Error('Respuesta inválida del servidor: '+x.replace(/<[^>]*>/g,' ').trim().slice(0,200))}if(d&&d.error)throw new Error(d.error);return d};
+const api=async(a,t='',b,q='')=>{let r;try{r=await fetch(`/api?a=${a}&t=${t}${q}`,b?{method:'POST',body:JSON.stringify(b)}:{})}catch{throw new Error('Sin conexión con el servidor. Abre http://localhost/pos_system/ con Apache y MySQL encendidos.')}const x=await r.text();let d;try{d=JSON.parse(x)}catch{throw new Error('Respuesta inválida del servidor: '+x.replace(/<[^>]*>/g,' ').trim().slice(0,200))}if(d&&d.error)throw new Error(d.error);return d};
 const toast=(m,e)=>{const x=$('#toast');x.textContent=m;x.className='show'+(e?' err':'');setTimeout(()=>x.className='',3200)};
 const money=n=>'$'+Number(n||0).toLocaleString('es-MX',{minimumFractionDigits:2});
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
