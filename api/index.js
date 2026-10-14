@@ -30,8 +30,7 @@ const auth=h=>{const [u,p]=Buffer.from((h||'').replace(/^Basic /,''),'base64').t
 module.exports=async(req,res)=>{
 const out=(d,c=200)=>{res.setHeader('Cache-Control','no-store');res.status(c).json(d)};
 try{
-if(!process.env.APP_PASSWORD)return out({error:'Falta la variable APP_PASSWORD en Vercel'});
-if(!auth(req.headers.authorization)){res.setHeader('WWW-Authenticate','Basic realm="POS"');return out({error:'No autorizado'},401)}
+if(process.env.APP_PASSWORD&&!auth(req.headers.authorization)){res.setHeader('WWW-Authenticate','Basic realm="POS"');return out({error:'No autorizado'},401)}
 if(!process.env.DATABASE_URL)return out({error:'Falta la variable DATABASE_URL en Vercel'});
 const {a='',t='',only='',id='',d='',h='',e='',n=''}=req.query;
 let b=req.body;if(typeof b==='string')b=b?JSON.parse(b):{};b=b||{};
